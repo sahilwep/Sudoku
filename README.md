@@ -2,6 +2,8 @@
 
 A Sudoku solver implemented using JavaScript, HTML, and CSS. This project aims to provide a functional and aesthetically pleasing Sudoku puzzle solver with an emphasis on UI/UX design using Google Material Design.
 
+[Sudoko Website](https://sahilwep.github.io/Sudoku/)
+
 ## Features
 
 - **Sudoku Solver:** Automatically solves Sudoku puzzles using backtracking algorithms.
