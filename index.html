@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sudoku Solver</title>
+  <!-- Materialize CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+  <script type="text/javascript" src="sudoku.js"></script>
+  <script type="text/javascript" src="analytics.js"></script>
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f0f4f8;
+      display: flex;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+    main {
+      flex: 1 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .sudoku-container {
+      text-align: center;
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    h4 {
+      font-size: 1.8rem;
+      color: #333333;
+      margin-bottom: 20px;
+    }
+    table {
+      border-collapse: collapse;
+      margin: 0 auto;
+      width: 360px;
+      height: 360px;
+    }
+    td {
+      border: 1px solid #999;
+      width: 40px;
+      height: 40px;
+      text-align: center;
+      font-size: 1.5rem;
+      vertical-align: middle;
+      background-color: #fafafa;
+    }
+    /* Outer and inner 3x3 borders */
+    td:nth-child(3n) {
+      border-right: 3px solid #333;
+    }
+    tr:nth-child(3n) td {
+      border-bottom: 3px solid #333;
+    }
+    table {
+      border: 3px solid #333;
+    }
+    td[contenteditable="true"]:focus {
+      background-color: #e0f7fa;
+      outline: none;
+    }
+    .btn-large {
+      margin: 10px;
+    }
+    .blue-btn {
+      background-color: #00796b !important;
+    }
+    .red-btn {
+      background-color: #e53935 !important;
+    }
+    footer {
+      padding: 10px 0;
+      text-align: center;
+      color: #ffffff;
+      background-color: #00796b;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <nav class="teal darken-2">
+      <div class="nav-wrapper container">
+        <a href="#" class="brand-logo">Sudoku Solver</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="sudoku-container">
+      <h4>Solve your Sudoku Puzzle</h4>
+
+      <!-- Sudoku Table -->
+      <table id="sudoku-board">
+        <!-- 9x9 sudoku grid -->
+        <tbody>
+          <tr>
+            <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+            <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+            <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+            <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+            <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+            <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+            <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+            <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+            <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+            <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+            <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+            <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+            <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+            <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+            <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+            <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+            <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+            <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+            <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Buttons for Solve and Clear -->
+      <div>
+        <button id="solve-button" class="btn-large blue-btn waves-effect waves-light">Solve</button>
+        <button id="clear-button" class="btn-large red-btn waves-effect waves-light">Clear</button>
+      </div>
+    </div>
+  </main>
+
+  <footer class="page-footer teal darken-2">
+    <div class="container">
+      © 2024 Sudoku Solver by Sahil Kr. Sharma
+    </div>
+  </footer>
+
+  <!-- Materialize JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+  <script type="text/javascript">
+    document.getElementById("sudoku-board").addEventListener("keyup", function(event) {
+      if(event.target && event.target.nodeName == "TD") {
+        var validNum = /[1-9]/;
+        var tdEl = event.target;
+        if (tdEl.innerText.length > 0 && validNum.test(tdEl.innerText[0])) {
+          tdEl.innerText = tdEl.innerText[0];
+        } else {
+          tdEl.innerText = "";
+        }
+      }
+    });
+
+    document.getElementById("solve-button").addEventListener("click", function(event) {
+      var boardString = boardToString();
+      var solution = SudokuSolver.solve(boardString);
+      if (solution) {
+        stringToBoard(solution);
+      } else {
+        alert("Invalid board!");
+      }
+    })
+
+    document.getElementById("clear-button").addEventListener("click", clearBoard);
+
+    function clearBoard() {
+      var tds = document.getElementsByTagName("td");
+      for (var i = 0; i < tds.length; i++) {
+        tds[i].innerText = "";
+      }
+    }
+
+    function boardToString() {
+      var string = "";
+      var validNum = /[1-9]/;
+      var tds = document.getElementsByTagName("td");
+      for (var i = 0; i < tds.length; i++) {
+        if (validNum.test(tds[i].innerText[0])) {
+          string += tds[i].innerText;
+        } else {
+          string += "-";
+        }
+      }
+      return string;
+    }
+
+    function stringToBoard(string) {
+      var currentCell;
+      var validNum = /[1-9]/;
+      var tds = document.getElementsByTagName("td");
+      for (var i = 0; i < tds.length; i++) {
+        currentCell = string[i];
+        if (validNum.test(currentCell)) {
+          tds[i].innerText = currentCell;
+        } else {
+          tds[i].innerText = "";
+        }
+      }
+    }
+  </script>
+
+</body>
+</html>
